@@ -28,11 +28,24 @@
   color: #61dafb;
 }
 
+.title{
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-transform: lowercase;
+}
 .flex-center{
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+.flex-center-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 
 @keyframes App-logo-spin {
   from {

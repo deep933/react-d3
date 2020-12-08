@@ -2,19 +2,35 @@ import React, {useEffect, useState } from 'react'
 import './App.css';
 import DonutChart from './Charts/DonutChart'
 import rawdata from './data.json'
-
+import useApi from './Hooks/useApi'
 
 
 function App() {
-
-const [data,setData] = useState(rawdata.map((data,idx)=>{return {protein : data.nutrition.protein,fat:data.nutrition.fat,carbs:data.nutrition.carbohydrate}}))
 const [index,setIndex] = useState(0)
-useEffect(()=>{
+const [{data, isLoading, isError},setUrl] = useApi()
 
-console.log(data)
+
+useEffect(()=>{
+  setUrl('/api')
+},[])
+
+useEffect(()=>{
+  if(data){
+  console.log(getData(0))
+  }
 },[data])
-  return <div>
-    <DonutChart data={data[index]} suffix={"g"} title={rawdata[index].name}/>
+
+const getData = (idx) =>{
+  const {protein,carbs,fat_sat,fat_mono,fat_poly} = {...data[idx]}
+  return {protein,carbs,fat:((+fat_sat)+(+fat_mono)+(+fat_poly)).toFixed(1)}
+}
+
+  return  <div>
+    {data && <div className="flex-center-row"><p className="title">{data[index].Shrt_Desc}</p>
+<b>{data[index].kcal} Calories</b>
+    </div>}
+
+    {data && <DonutChart data={getData(index)} suffix={"g"}/>}
     <div className="flex-center">
     <button id="changeBtn" onClick={()=>{
       if(index<data.length-1){
@@ -27,7 +43,6 @@ console.log(data)
       Next
     </button>
     </div>
-    
   </div>
  
 }
